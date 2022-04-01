@@ -15,26 +15,27 @@ prueba = []
 for i in foo:
     prueba.append(i[1])
 
-vectorizer = CountVectorizer()
-X = vectorizer.fit_transform(prueba)
-word = vectorizer.get_feature_names()
-print(word)
-print(X.toarray())
+test = []
+for x in prueba:
+    test.append([x])
 
-# transformer = TfidfTransformer()  
-# print(transformer)
+words = []
+tfidfdoc = []
+for i in test:
+    vectorizer = CountVectorizer()
+    X = vectorizer.fit_transform(i)
+    word = vectorizer.get_feature_names_out()
+    words.append(word)
+    transformer = TfidfTransformer()
+    tfidf = transformer.fit_transform(X)
+    tfidfdoc.append(tfidf.toarray())
 
-# tfidf = transformer.fit_transform(X)  
-# print(tfidf.toarray())
 
+print(words)
+print(tfidfdoc)
 
+df = pd.DataFrame(foo, columns=['DocNumb', 'Document'])
+df['Terms'] = words
+df['TF-IDF'] = tfidfdoc
 
-#df = pd.DataFrame(foo, columns=['DocNumb', 'Document'])
-
-#df = pd.DataFrame(word, columns=['Term'])
-# df["Ind"] = " "
-# df["Term"] = " "
-# df["TF"] = " "
-# df["TF-IDF"] = " "
-# df["IDF"] = " "
-#print(df)
+print(df)
