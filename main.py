@@ -20,6 +20,7 @@ for i in foo:
 words = []
 tfidfdoc = []
 positions = []
+exes = []
 
 for i in test:
     vectorizer = CountVectorizer(stop_words = "english")
@@ -31,10 +32,13 @@ for i in test:
     positions.append(position)
     #Se genera array con los términos de cada documento
     words.append(word)
+    exes.append(X.toarray())
     transformer = TfidfTransformer()
     #Se calcula TF-IDF de cada término de cada documento y se almacena en otro array
     tfidf = transformer.fit_transform(X)
     tfidfdoc.append(tfidf.toarray())
+
+print(exes)
 
 #Se genera dataframe donde cada línea representa un documento, se añade número de documento, el contenido del doc,
 #los términos de ese documento y el valor TF-IDF de cada término del documento.
