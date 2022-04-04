@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 with open(sys.argv[1], 'r') as f:
     liked = [line.rstrip() for line in f]
 
-#Se lee fichero de recomendar.txt por línea de comandos
-with open(sys.argv[2], 'r') as f:
-    recommend = [line.rstrip() for line in f]
+# #Se lee fichero de recomendar.txt por línea de comandos
+# with open(sys.argv[2], 'r') as f:
+#     recommend = [line.rstrip() for line in f]
 
 #Extraemos documentos que sabemos que le han gustado al usuario
 interests = list(map(lambda x: re.split(r".\s", x, 1), liked))
@@ -24,6 +24,11 @@ X = vectorizer.fit_transform(dfliked['Document'])
 word = vectorizer.get_feature_names_out()
 transformer = TfidfTransformer()
 tfidfmatrix = transformer.fit_transform(X)
+
+def recommend():
+    #Hacer función recomendación
+    print("hola")
+
 
 cosine_similarities = cosine_similarity(tfidfmatrix, tfidfmatrix)
 print(cosine_similarities)

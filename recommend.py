@@ -6,23 +6,23 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 
-#Se lee fichero de interests.txt por línea de comandos
+#Se lee fichero de recommendations.txt por línea de comandos
 with open(sys.argv[1], 'r') as f:
-    liked = [line.rstrip() for line in f]
-
-#Se lee fichero de recomendar.txt por línea de comandos
-with open(sys.argv[2], 'r') as f:
     recommend = [line.rstrip() for line in f]
 
+# #Se lee fichero de recomendar.txt por línea de comandos
+# with open(sys.argv[2], 'r') as f:
+#     recommend = [line.rstrip() for line in f]
+
 #Extraemos documentos que vamos a ver si podemos recomendar
-recomendations = list(map(lambda x: re.split(r".\s", x, 1), recommend))
-dfrec = pd.DataFrame(recomendations, columns=['DocNumb', 'Document'])
+# recomendations = list(map(lambda x: re.split(r".\s", x, 1), recommend))
+# dfrec = pd.DataFrame(recomendations, columns=['DocNumb', 'Document'])
 
 #Extraemos documentos que sabemos que le han gustado al usuario
-interests = list(map(lambda x: re.split(r".\s", x, 1), liked))
+recommendations = list(map(lambda x: re.split(r".\s", x, 1), recommend))
 test = []
 
-for i in interests:
+for i in recommendations:
     test.append([i[1]])
 
 #Se calculan los vectores TF-IDF para cada término del documento
@@ -45,16 +45,9 @@ for i in test:
     tfidf = transformer.fit_transform(X)
     tfidfdoc.append(tfidf.toarray())
 
-dfliked = pd.DataFrame(interests, columns=['DocNumb', 'Document'])
-dfliked['Term Ind'] = positions
-dfliked['Terms'] = words
-dfliked['TF-IDF'] = tfidfdoc
+dfrecommend = pd.DataFrame(recommendations, columns=['DocNumb', 'Document'])
+dfrecommend['Term Ind'] = positions
+dfrecommend['Terms'] = words
+dfrecommend['TF-IDF'] = tfidfdoc
 
-cosine_similarities = list(enumerate(map(cosine_similarity, dfliked['TF-IDF'])))
-cosine_similarities = sorted(cosine_similarities, key = lambda x: x[1], reverse = True)
-cosine_similarities = cosine_similarities[1:6]
-doc_indices = [i[0] for i in cosine_similarities]
-rec = dfliked.iloc[doc_indices]
-
-for index, row in rec.iterrows():
-    print(row['DocNumb'], ".", row['Document'])
+print(dfrecommend)
