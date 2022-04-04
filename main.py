@@ -4,6 +4,7 @@ import re
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import matplotlib.pyplot as plt
 
 #Se lee fichero de interests.txt por línea de comandos
 with open(sys.argv[1], 'r') as f:
@@ -49,10 +50,11 @@ dfliked['Term Ind'] = positions
 dfliked['Terms'] = words
 dfliked['TF-IDF'] = tfidfdoc
 
-print(dfliked)
-
 cosine_similarities = list(enumerate(map(cosine_similarity, dfliked['TF-IDF'])))
-# cosine_similarities = sorted(cosine_similarities, key = lambda x: x[1], reverse = True)
-# cosine_similarities = cosine_similarities[1:6]
+cosine_similarities = sorted(cosine_similarities, key = lambda x: x[1], reverse = True)
+cosine_similarities = cosine_similarities[1:6]
+doc_indices = [i[0] for i in cosine_similarities]
+rec = dfliked.iloc[doc_indices]
 
-print(cosine_similarities)
+for index, row in rec.iterrows():
+    print(row['DocNumb'], ".", row['Document'])
