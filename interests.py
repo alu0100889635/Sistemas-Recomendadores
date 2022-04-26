@@ -17,16 +17,20 @@ dfliked = pd.DataFrame(interests, columns=['DocNumb', 'Document'])
 
 vectorizer = CountVectorizer(stop_words = "english")
 X = vectorizer.fit_transform(dfliked['Document'])
-word = vectorizer.get_feature_names_out()
+words = vectorizer.get_feature_names_out()
+#En vocabulario se guardan los términos y su orden..
+vocabulary = vectorizer.vocabulary_
 transformer = TfidfTransformer()
 tfidfmatrix = transformer.fit_transform(X)
 
 def recommend():
     #Hacer función recomendación
-    print("hola")
+    print("")
 
 
 #Se calcula la similitud del coseno
+#Con [0:1] se hace la similitud del coseno de los vectores con el primer documento.
+#cosine_similarities = cosine_similarity(tfidfmatrix[0:1], tfidfmatrix).flatten()
 cosine_similarities = cosine_similarity(tfidfmatrix, tfidfmatrix)
 print(cosine_similarities)
 
