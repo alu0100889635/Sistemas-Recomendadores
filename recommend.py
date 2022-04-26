@@ -10,15 +10,7 @@ import matplotlib.pyplot as plt
 with open(sys.argv[1], 'r') as f:
     recommend = [line.rstrip() for line in f]
 
-# #Se lee fichero de recomendar.txt por línea de comandos
-# with open(sys.argv[2], 'r') as f:
-#     recommend = [line.rstrip() for line in f]
-
-#Extraemos documentos que vamos a ver si podemos recomendar
-# recomendations = list(map(lambda x: re.split(r".\s", x, 1), recommend))
-# dfrec = pd.DataFrame(recomendations, columns=['DocNumb', 'Document'])
-
-#Extraemos documentos que sabemos que le han gustado al usuario
+#Extraemos documentos que queremos ver si recomendamos al usuario
 recommendations = list(map(lambda x: re.split(r".\s", x, 1), recommend))
 test = []
 
