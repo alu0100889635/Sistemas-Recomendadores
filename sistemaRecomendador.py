@@ -43,4 +43,9 @@ def recommend():
 cosine_similarities = cosine_similarity(tfidfmatrixrec, tfidfmatrixint)
 print(cosine_similarities)
 
+for i in cosine_similarities:
+    for j in range(0, len(i)):
+        print(i[j])
+        
+
 recommend()
