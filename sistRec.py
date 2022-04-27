@@ -20,25 +20,32 @@ dfdocs = pd.DataFrame(documents, columns=['DocNumb', 'Document'])
 dfdocs['Like'] = [1, 1, 1, 1, 0, 0, 0, 0, 0]
 print(dfdocs)
 
-dflikes = dfdocs.loc[dfdocs.Like == 1]
-dfrec = dfdocs.loc[dfdocs.Like != 1]
+# dflikes = dfdocs.loc[dfdocs.Like == 1]
+# dfrec = dfdocs.loc[dfdocs.Like != 1]
 
 vectorizer = TfidfVectorizer(stop_words = "english")
-tfidfmatrixlike = vectorizer.fit_transform(dfdocs['Document'])
+tfidfmatrix = vectorizer.fit_transform(dfdocs['Document'])
 words = vectorizer.get_feature_names_out()
 
-tfidfmatrixrec = vectorizer.transform(dfrec['Document'])
+# #Se calcula la similitud del coseno: Se calcula cuánto de similares son los documentos. 
+# #Cuando sale un 1 es porque se esta calculando la similitud de un documento consigo mismo.
 
-cosine_similarities = cosine_similarity(tfidfmatrixrec, tfidfmatrixlike)
-print(cosine_similarities)
+cosine_similarities = cosine_similarity(tfidfmatrix, tfidfmatrix)
+#print(cosine_similarities)
 
+lowerTriangleMatrix = np.tril(cosine_similarities)
 
 fila = []
-for idi, i in enumerate(cosine_similarities):
+for idi, i in enumerate(lowerTriangleMatrix):
     for j in range(0, len(i)):
-        if i[j] >= 0.8 and i[j]<1:
+        if 0.8 <= round(i[j], 6) and round(i[j], 6) < 1.0:
             fila.append(idi)
-        
+
+
+dfmatrix = pd.DataFrame(lowerTriangleMatrix, columns=['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9',])
+print(dfmatrix)
+
 print("\nTextos a recomendar: \n")
 for x in fila:
-    print(dfrec.iloc[x]['DocNumb'], ". ", dfrec.iloc[x]['Document'])
+    if dfdocs.iloc[x]['Like'] != 1:
+        print(dfdocs.iloc[x]['DocNumb'], ". ", dfdocs.iloc[x]['Document'])
