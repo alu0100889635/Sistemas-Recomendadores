@@ -43,9 +43,17 @@ def recommend():
 cosine_similarities = cosine_similarity(tfidfmatrixrec, tfidfmatrixint)
 print(cosine_similarities)
 
-for i in cosine_similarities:
+fila = 0
+columna = 0
+for idi, i in enumerate(cosine_similarities):
     for j in range(0, len(i)):
-        print(i[j])
+        if i[j] > 0.8:
+            fila = idi
+            columna = j
+            print(j) #Columnas
+            print(idi) #Filas
+
+print(cosine_similarities[idi][j])
         
 
 recommend()
