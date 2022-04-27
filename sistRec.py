@@ -35,15 +35,22 @@ cosine_similarities = cosine_similarity(tfidfmatrix, tfidfmatrix)
 
 lowerTriangleMatrix = np.tril(cosine_similarities)
 
+# fila = []
+# lowerTriangleMatrix = lowerTriangleMatrix.flatten()
+# sorted = np.sort(lowerTriangleMatrix)[::-1]
+# for idi, i in enumerate(sorted):
+#         if 0.0 < round(i, 6) < 1.0:
+#             fila.append(idi)
+
 fila = []
 for idi, i in enumerate(lowerTriangleMatrix):
     for j in range(0, len(i)):
-        if 0.8 <= round(i[j], 6) and round(i[j], 6) < 1.0:
+        if 0.8 <= round(i[j], 6) < 1.0:
             fila.append(idi)
 
 
-dfmatrix = pd.DataFrame(lowerTriangleMatrix, columns=['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9',])
-print(dfmatrix)
+dfmatrix = pd.DataFrame(lowerTriangleMatrix, columns=['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9'])
+#print(dfmatrix)
 
 print("\nTextos a recomendar: \n")
 for x in fila:
