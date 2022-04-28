@@ -17,10 +17,39 @@ with open(sys.argv[1], 'r') as f:
 #Extraemos documentos que sabemos que le han gustado al usuario
 documents = list(map(lambda x: re.split(r".\s", x, 1), liked))
 
+test = []
+
+for i in documents:
+    test.append([i[1]])
+
+words = []
+tfidfdoc = []
+positions = []
+exes = []
+
+for i in test:
+    vectorizer = CountVectorizer(stop_words = "english")
+    X = vectorizer.fit_transform(i)
+    word = vectorizer.get_feature_names_out()
+    position = []
+    for x in word:
+        position.append(i[0].lower().find(x))
+    positions.append(position)
+    words.append(word)
+    exes.append(X.toarray())
+    transformer = TfidfTransformer()
+    tfidf = transformer.fit_transform(X)
+    tfidfdoc.append(tfidf.toarray())
+
 dfdocs = pd.DataFrame(documents, columns=['DocNumb', 'Document'])
-#Se añade columna al df para saber qué textos le han gustado y que textos aún no se sabe si le ahn gustado o no"
+dfdocs['Term Ind'] = positions
+dfdocs['Terms'] = words
+dfdocs['TF-IDF'] = tfidfdoc
 dfdocs['Like'] = [1, 1, 1, 1, 0, 0, 0, 0, 0]
 print(dfdocs)
+
+#dfdocs = pd.DataFrame(documents, columns=['DocNumb', 'Document'])
+#Se añade columna al df para saber qué textos le han gustado y que textos aún no se sabe si le ahn gustado o no"
 
 # dflikes = dfdocs.loc[dfdocs.Like == 1]
 # dfrec = dfdocs.loc[dfdocs.Like != 1]
@@ -53,8 +82,6 @@ for idi, i in enumerate(lowerTriangleMatrix):
 
 dfmatrix = pd.DataFrame(lowerTriangleMatrix)
 sorted_values = pd.Series
-delete_values = []
-recdocs = []
 
 for i in range(0, len(dfmatrix.columns)):
     if dfdocs.iloc[i]['Like'] == 1:
