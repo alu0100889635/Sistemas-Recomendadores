@@ -1,7 +1,9 @@
 import sys
+from cv2 import sort
 import pandas as pd
 import re
 import numpy as np
+from requests import delete
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -49,10 +51,17 @@ for idi, i in enumerate(lowerTriangleMatrix):
             fila.append(idi)
 
 
-dfmatrix = pd.DataFrame(lowerTriangleMatrix, columns=['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9'])
-#print(dfmatrix)
+dfmatrix = pd.DataFrame(lowerTriangleMatrix)
+sorted_values = pd.Series
+delete_values = []
+recdocs = []
 
-print("\nTextos a recomendar: \n")
-for x in fila:
-    if dfdocs.iloc[x]['Like'] != 1:
-        print(dfdocs.iloc[x]['DocNumb'], ". ", dfdocs.iloc[x]['Document'])
+for i in range(0, len(dfmatrix.columns)):
+    if dfdocs.iloc[i]['Like'] == 1:
+        print("\nPorque te ha gustado el documento ", dfdocs.iloc[i]['DocNumb'] ,", te recomendamos: ")
+        sorted_values = dfmatrix[i].sort_values(ascending = False)
+        for index, value in sorted_values.items():
+            if(round(value, 6) != 1.0):
+                if(round(value, 6) != 0.0):
+                    print("Documento ", dfdocs.iloc[index]['DocNumb'],  " -> Similitud con documento", dfdocs.iloc[i]['DocNumb'], "= ", round(value, 6))
+    
