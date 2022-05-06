@@ -49,7 +49,7 @@ dfdocs['Term Ind'] = positions
 dfdocs['Terms'] = words
 dfdocs['TF-IDF'] = tfidfdoc
 
-print(dfdocs.columns)
+print(dfdocs[['DocNumb', 'Term Ind', 'Terms', 'TF-IDF']])
 
 #Se calcula el tfidf de todos los documentos y se sacan los términos
 vectorizer = TfidfVectorizer(stop_words = "english")
