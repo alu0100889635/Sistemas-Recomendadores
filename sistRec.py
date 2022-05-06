@@ -16,15 +16,42 @@ with open(sys.argv[1], 'r') as f:
 
 #Extraemos documentos que sabemos que le han gustado al usuario
 documents = list(map(lambda x: re.split(r".\s", x, 1), liked))
-
 dfdocs = pd.DataFrame(documents, columns=['DocNumb', 'Document'])
+
 #Se añade columna al df para saber qué textos le han gustado y que textos aún no se sabe si le ahn gustado o no"
 dfdocs['Like'] = [1, 1, 1, 1, 0, 0, 0, 0, 0]
-print(dfdocs)
 
-# dflikes = dfdocs.loc[dfdocs.Like == 1]
-# dfrec = dfdocs.loc[dfdocs.Like != 1]
+#Se añade al df columnas relativas a los términos de cada documento, al índice de cada término y al tf-idf de cada documento
+test = []
+for i in documents:
+    test.append([i[1]])
 
+words = []
+tfidfdoc = []
+positions = []
+exes = []
+
+for i in test:
+    vectorizer = CountVectorizer(stop_words = "english")
+    X = vectorizer.fit_transform(i)
+    word = vectorizer.get_feature_names_out()
+    position = []
+    for x in word:
+        position.append(i[0].lower().find(x))
+    positions.append(position)
+    words.append(word)
+    exes.append(X.toarray())
+    transformer = TfidfTransformer()
+    tfidf = transformer.fit_transform(X)
+    tfidfdoc.append(tfidf.toarray())
+
+dfdocs['Term Ind'] = positions
+dfdocs['Terms'] = words
+dfdocs['TF-IDF'] = tfidfdoc
+
+print(dfdocs.columns)
+
+#Se calcula el tfidf de todos los documentos y se sacan los términos
 vectorizer = TfidfVectorizer(stop_words = "english")
 tfidfmatrix = vectorizer.fit_transform(dfdocs['Document'])
 words = vectorizer.get_feature_names_out()
@@ -33,16 +60,7 @@ words = vectorizer.get_feature_names_out()
 # #Cuando sale un 1 es porque se esta calculando la similitud de un documento consigo mismo.
 
 cosine_similarities = cosine_similarity(tfidfmatrix, tfidfmatrix)
-#print(cosine_similarities)
-
 lowerTriangleMatrix = np.tril(cosine_similarities)
-
-# fila = []
-# lowerTriangleMatrix = lowerTriangleMatrix.flatten()
-# sorted = np.sort(lowerTriangleMatrix)[::-1]
-# for idi, i in enumerate(sorted):
-#         if 0.0 < round(i, 6) < 1.0:
-#             fila.append(idi)
 
 fila = []
 for idi, i in enumerate(lowerTriangleMatrix):
