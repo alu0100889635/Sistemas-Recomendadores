@@ -5,7 +5,7 @@ Proyecto de Sistemas Recomendadores de la asignatura Técnicas Avanzadas de Aná
 
 ## Instalación
 
-Instalación de los paquetes con Python:
+Instalación de los paquetes con Python3:
 
 ```bash
   python3 instalacion.py
