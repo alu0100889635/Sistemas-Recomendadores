@@ -1,14 +1,10 @@
 import sys
-from cv2 import sort
 import pandas as pd
-import re
 import numpy as np
-from requests import delete
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import matplotlib.pyplot as plt
 
 #Se lee fichero de textos.txt por línea de comandos
 with open(sys.argv[1], 'r') as f:

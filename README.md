@@ -5,7 +5,7 @@ Proyecto de Sistemas Recomendadores de la asignatura *Técnicas Avanzadas de An�
 
 ## Instalación
 
-Instalación de los paquetes con Python3:
+Instalación de los paquetes con Python v3.8.10:
 
 ```bash
   python3 instalacion.py
@@ -16,5 +16,5 @@ Instalación de los paquetes con Python3:
 Para poner en marcha el proyecto, ejecute este comando: 
 
 ```bash
-  python3 sistRec.py fichero_documentos.txt
+  python3 sistRec.py textos.txt
 ```
