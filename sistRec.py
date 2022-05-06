@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+import re
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer

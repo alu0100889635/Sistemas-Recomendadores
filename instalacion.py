@@ -7,3 +7,6 @@ subprocess.check_call([sys.executable, '-m', 'pip', 'install',
 
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', "-U", 
 'scikit-learn'])
+
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 
+'numpy'])
