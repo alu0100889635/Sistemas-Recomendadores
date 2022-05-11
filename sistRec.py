@@ -51,7 +51,6 @@ print(dfdocs[['DocNumb', 'Term Ind', 'Terms', 'TF-IDF']])
 #Se calcula el tfidf de todos los documentos y se sacan los términos
 vectorizer = TfidfVectorizer(stop_words = "english")
 tfidfmatrix = vectorizer.fit_transform(dfdocs['Document'])
-words = vectorizer.get_feature_names_out()
 
 # #Se calcula la similitud del coseno: Se calcula cuánto de similares son los documentos. 
 # #Cuando sale un 1 es porque se esta calculando la similitud de un documento consigo mismo.
