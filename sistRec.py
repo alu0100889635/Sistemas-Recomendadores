@@ -31,13 +31,11 @@ tfidfmatrix, words = vectorizeDocs(dfdocs['Document'])
 #Se guarda en un df el tf-idf de cada uno de los términos de cada doc
 tfidfdoc = []
 for i in tfidfmatrix.toarray():
-    tfidfdoc.append(i)
-# for i in tfidfmatrix.toarray():
-#     tfidfdocnonzero = []
-#     for x in range(0, len(i)):
-#         if(i[x]) != 0.0:
-#             tfidfdocnonzero.append(i[x])
-#     tfidfdoc.append(tfidfdocnonzero)
+    tfidfdocnonzero = []
+    for x in range(0, len(i)):
+        if(i[x]) != 0.0:
+            tfidfdocnonzero.append(i[x])
+    tfidfdoc.append(tfidfdocnonzero)
 
 # Se guarda en ese mismo df los términos y los índices de esos términos
 words = []
