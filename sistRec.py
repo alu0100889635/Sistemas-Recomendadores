@@ -30,18 +30,17 @@ tfidfdoc = []
 positions = []
 for i in test:
     X, word = vectorizeDocs(i)
+    tfidfdoc.append(X.toarray())
     position = []
     for w in word:
         position.append(i[0].lower().find(w))
     positions.append(position)
     words.append(word)
-    tfidfdoc.append(X.toarray())
 
 dfdocs['Term Ind'] = positions
 dfdocs['Terms'] = words
 dfdocs['TF-IDF'] = tfidfdoc
 
-#print(dfdocs[['DocNumb', 'Term Ind', 'Terms', 'TF-IDF']])
 print(dfdocs[['DocNumb', 'Term Ind', 'Terms']])
 
 #Se calcula el tfidf de todos los documentos y se sacan los términos
