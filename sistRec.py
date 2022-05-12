@@ -25,26 +25,36 @@ def vectorizeDocs(doc):
     vectorizer = TfidfVectorizer(stop_words = "english")
     return vectorizer.fit_transform(doc), vectorizer.get_feature_names_out()
 
-words = []
+#Se calcula el tfidf de todos los documentos y se sacan los términos
+tfidfmatrix, words = vectorizeDocs(dfdocs['Document'])
+
+#Se guarda en un df el tf-idf de cada uno de los términos de cada doc
 tfidfdoc = []
+for i in tfidfmatrix.toarray():
+    tfidfdoc.append(i)
+# for i in tfidfmatrix.toarray():
+#     tfidfdocnonzero = []
+#     for x in range(0, len(i)):
+#         if(i[x]) != 0.0:
+#             tfidfdocnonzero.append(i[x])
+#     tfidfdoc.append(tfidfdocnonzero)
+
+# Se guarda en ese mismo df los términos y los índices de esos términos
+words = []
 positions = []
 for i in test:
     X, word = vectorizeDocs(i)
-    tfidfdoc.append(X.toarray())
     position = []
     for w in word:
         position.append(i[0].lower().find(w))
     positions.append(position)
     words.append(word)
 
+dfdocs['TF-IDF'] = tfidfdoc
 dfdocs['Term Ind'] = positions
 dfdocs['Terms'] = words
-dfdocs['TF-IDF'] = tfidfdoc
+print(dfdocs[['DocNumb', 'Term Ind', 'Terms', 'TF-IDF']])
 
-print(dfdocs[['DocNumb', 'Term Ind', 'Terms']])
-
-#Se calcula el tfidf de todos los documentos y se sacan los términos
-tfidfmatrix, words = vectorizeDocs(dfdocs['Document'])
 
 # #Se calcula la similitud del coseno: Se calcula cuánto de similares son los documentos. 
 # #Cuando sale un 1 es porque se esta calculando la similitud de un documento consigo mismo.
@@ -68,7 +78,8 @@ for i in range(0, len(dfmatrix.columns)):
         print("\nPorque te ha gustado el documento ", dfdocs.iloc[i]['DocNumb'] ,", te recomendamos: ")
         sorted_values = dfmatrix[i].sort_values(ascending = False)
         for index, value in sorted_values.items():
-            if(round(value, 6) != 1.0):
-                if(round(value, 6) != 0.0):
-                    print("Documento ", dfdocs.iloc[index]['DocNumb'],  " -> Similitud con documento", dfdocs.iloc[i]['DocNumb'], "= ", round(value, 6))
+            if(round(value, 6) != 1.0): #Se cogen los valores distintos de uno que hay en la matriz triangular
+                if(round(value, 6) != 0.0): #Se cogen los valores distintos de cero que hay en la matriz triangular
+                    if(dfdocs.iloc[index]['Like'] != 1): #Se recomiendan solo los que no le han gustado aún
+                        print("Documento ", dfdocs.iloc[index]['DocNumb'],  " -> Similitud con documento", dfdocs.iloc[i]['DocNumb'], "= ", round(value, 6))
     
