@@ -21,16 +21,18 @@ test = []
 for i in documents:
     test.append([i[1]])
 
+def vectorizeDocs(doc):
+    vectorizer = TfidfVectorizer(stop_words = "english")
+    return vectorizer.fit_transform(doc), vectorizer.get_feature_names_out()
+
 words = []
 tfidfdoc = []
 positions = []
 for i in test:
-    vectorizer = TfidfVectorizer(stop_words = "english")
-    X = vectorizer.fit_transform(i)
-    word = vectorizer.get_feature_names_out()
+    X, word = vectorizeDocs(i)
     position = []
-    for x in word:
-        position.append(i[0].lower().find(x))
+    for w in word:
+        position.append(i[0].lower().find(w))
     positions.append(position)
     words.append(word)
     tfidfdoc.append(X.toarray())
@@ -39,11 +41,11 @@ dfdocs['Term Ind'] = positions
 dfdocs['Terms'] = words
 dfdocs['TF-IDF'] = tfidfdoc
 
-print(dfdocs[['DocNumb', 'Term Ind', 'Terms', 'TF-IDF']])
+#print(dfdocs[['DocNumb', 'Term Ind', 'Terms', 'TF-IDF']])
+print(dfdocs[['DocNumb', 'Term Ind', 'Terms']])
 
 #Se calcula el tfidf de todos los documentos y se sacan los términos
-vectorizer = TfidfVectorizer(stop_words = "english")
-tfidfmatrix = vectorizer.fit_transform(dfdocs['Document'])
+tfidfmatrix, words = vectorizeDocs(dfdocs['Document'])
 
 # #Se calcula la similitud del coseno: Se calcula cuánto de similares son los documentos. 
 # #Cuando sale un 1 es porque se esta calculando la similitud de un documento consigo mismo.
@@ -58,6 +60,7 @@ for idi, i in enumerate(lowerTriangleMatrix):
             fila.append(idi)
 
 
+#Se ordenan los documentos de mayor a menor similitud y se le muestran al usuario según los docs que le han gustado previamente
 dfmatrix = pd.DataFrame(lowerTriangleMatrix)
 sorted_values = pd.Series
 
