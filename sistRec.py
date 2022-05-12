@@ -2,8 +2,6 @@ import sys
 import pandas as pd
 import re
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -26,10 +24,8 @@ for i in documents:
 words = []
 tfidfdoc = []
 positions = []
-exes = []
-
 for i in test:
-    vectorizer = CountVectorizer(stop_words = "english")
+    vectorizer = TfidfVectorizer(stop_words = "english")
     X = vectorizer.fit_transform(i)
     word = vectorizer.get_feature_names_out()
     position = []
@@ -37,10 +33,7 @@ for i in test:
         position.append(i[0].lower().find(x))
     positions.append(position)
     words.append(word)
-    exes.append(X.toarray())
-    transformer = TfidfTransformer()
-    tfidf = transformer.fit_transform(X)
-    tfidfdoc.append(tfidf.toarray())
+    tfidfdoc.append(X.toarray())
 
 dfdocs['Term Ind'] = positions
 dfdocs['Terms'] = words
